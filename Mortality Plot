@@ -1,0 +1,33 @@
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+def plot_mortality_by_gender_for_country(df, country, cause_of_death=None):
+  
+    # Filter data for the specified country
+    df = df[df['name'] == country]
+    
+    # Filter data for the specified cause of death (if given)
+    if cause_of_death:
+        df = df[df['Cause'] == cause_of_death]
+    
+    # Map gender labels for better readability in the plot
+    df['gender'] = df['Sex'].map({1: 'Men', 2: 'Women'})
+    
+    # Plot using seaborn
+    plt.figure(figsize=(10, 6))
+    sns.lineplot(data=df, x='Year', y='Deaths', hue='gender', style='gender', markers=True)
+    
+    # Add labels and title
+    title = f'Mortality by Gender in {country}'
+    if cause_of_death:
+        title += f' (Cause of Death: {cause_of_death})'
+    plt.title(title, fontsize=16)
+    plt.xlabel('Year', fontsize=12)
+    plt.ylabel('Number of Deaths', fontsize=12)
+    plt.legend(title='Gender')
+    plt.grid(True)
+    plt.tight_layout()
+    
+    # Show the plot
+    plt.show()
